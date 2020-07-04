@@ -10,5 +10,6 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Ground Hit");
         }
+	//Debug.Log("Hit Something");
     }
 }
