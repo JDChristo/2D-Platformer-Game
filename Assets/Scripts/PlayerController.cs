@@ -8,10 +8,18 @@ public class PlayerController : MonoBehaviour
     //public
     public Animator animator;
     public float jump, speed;
+    public Vector2 boxCrouchOffset, boxCrouchSize;
 
     //private
+    private BoxCollider2D collider2D;
     private bool isCrouch = false;
-
+    private Vector2 boxSize, boxOffset;
+    private void Start()
+    {
+        collider2D = GetComponent<BoxCollider2D>();
+        boxOffset = collider2D.offset;
+        boxSize = collider2D.size;
+    }
 
     void Update()
     {
@@ -43,6 +51,12 @@ public class PlayerController : MonoBehaviour
             scale.x *= -1;
         }
         transform.localScale = scale;
+
+        //Crouch Player
+        isCrouch = Input.GetKey(KeyCode.LeftControl);
+        animator.SetBool("isCrouch", isCrouch);
+        collider2D.size = (isCrouch) ? boxCrouchSize : boxSize;
+        collider2D.offset = (isCrouch) ? boxCrouchOffset : boxOffset;
 
     }
 }
