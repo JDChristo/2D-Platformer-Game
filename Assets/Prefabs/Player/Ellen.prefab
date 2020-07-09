@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 5902404131400667137}
   - component: {fileID: 5902404131400667139}
   - component: {fileID: 213483035}
-  - component: {fileID: 213483033}
-  - component: {fileID: 213483032}
+  - component: {fileID: 2650397114344647461}
+  - component: {fileID: 5902404131457740316}
   m_Layer: 0
   m_Name: Ellen
   m_TagString: Untagged
@@ -124,8 +124,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!61 &213483033
-BoxCollider2D:
+--- !u!70 &2650397114344647461
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -138,19 +138,9 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 1}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.42, y: 0.1}
-    oldSize: {x: 3.7534883, y: 2.8325582}
-    newSize: {x: 3.7534883, y: 2.8325582}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 2}
-  m_EdgeRadius: 0
---- !u!114 &213483032
+  m_Size: {x: 0.6, y: 2}
+  m_Direction: 0
+--- !u!114 &5902404131457740316
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,5 +156,5 @@ MonoBehaviour:
   jumpForce: 400
   walkSpeed: 2
   runSpeed: 5
-  boxCrouchOffset: {x: 0, y: 0.6}
-  boxCrouchSize: {x: 1, y: 1.23}
+  boxCrouchOffset: {x: -0.1, y: 0.7}
+  boxCrouchSize: {x: 0.8, y: 1.5}

@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -13,10 +14,10 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - CheckPointFlag
+  - EnvTrigger
+  - Pit
   - 
   - 
   - 
@@ -38,6 +39,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: ParallaxCanvas
+    uniqueID: 3572781033
+    locked: 0
+  - name: Back_Environment
+    uniqueID: 3372141491
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Front_Environment
+    uniqueID: 3973250103
     locked: 0
