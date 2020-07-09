@@ -13,9 +13,9 @@ public class PlayerController : MonoBehaviour
     //private
     private BoxCollider2D playerCollider;
     private Rigidbody2D rb2d;
-    private bool isCrouch = false;
-    private bool isWalking = false;
     private Vector2 boxSize, boxOffset;
+    
+
     private void Start()
     {
         playerCollider = GetComponent<BoxCollider2D>();
@@ -30,22 +30,22 @@ public class PlayerController : MonoBehaviour
 
         bool yAxis = Input.GetKeyDown(KeyCode.Space); //Vertical Movement
 
-        isWalking = Input.GetKey(KeyCode.LeftShift); //Walk Player
+        bool isWalking = Input.GetKey(KeyCode.LeftShift); //Walk Player
 
-        isCrouch = Input.GetKey(KeyCode.LeftControl); //Crouch Player
+        bool isCrouch = Input.GetKey(KeyCode.LeftControl); //Crouch Player
         
         if (!isCrouch)
         {
-            PlayerMovement(xAxis, yAxis);
+            PlayerMovement(xAxis, yAxis, walking : isWalking, crouching : isCrouch);
         }
-        PlayerAnimation(xAxis, yAxis);
+        PlayerAnimation(xAxis, yAxis,walking : isWalking, crouching : isCrouch);
     }
 
-    private void PlayerMovement(float xAxis, bool yAxis)
+    private void PlayerMovement(float xAxis, bool yAxis, bool walking, bool crouching)
     {
 
         //Set Speed
-        float speed = (isWalking) ? walkSpeed : runSpeed;
+        float speed = (walking) ? walkSpeed : runSpeed;
 
         // Move player
         Vector3 position = transform.localPosition;
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void PlayerAnimation(float xAxis, bool yAxis)
+    private void PlayerAnimation(float xAxis, bool yAxis, bool walking, bool crouching)
     {
         // Move player animation
         animator.SetFloat("Speed", Mathf.Abs(xAxis));
@@ -73,12 +73,12 @@ public class PlayerController : MonoBehaviour
         transform.localScale = scale;
 
         //Walk Player Animation
-        animator.SetBool("isWalk", isWalking);
+        animator.SetBool("isWalk", walking);
 
         //Crouch Player Animation
-        animator.SetBool("isCrouch", isCrouch);
-        playerCollider.size = (isCrouch) ? boxCrouchSize : boxSize;
-        playerCollider.offset = (isCrouch) ? boxCrouchOffset : boxOffset;
+        animator.SetBool("isCrouch", crouching);
+        playerCollider.size = (crouching) ? boxCrouchSize : boxSize;
+        playerCollider.offset = (crouching) ? boxCrouchOffset : boxOffset;
 
         //Jump Player Animation
         if (yAxis)
@@ -86,5 +86,27 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("isJump");
         }
 
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.gameObject.layer == LayerMask.NameToLayer("EnvTrigger"))
+        {
+            Animator anim = other.gameObject.GetComponent<Animator>();
+            anim.Play("Fade Out");
+        }
+    }
+    private void OnTriggerStay2D(Collider2D other) {
+        if(other.gameObject.layer == LayerMask.NameToLayer("EnvTrigger"))
+        {
+            Animator anim = other.gameObject.GetComponent<Animator>();
+            anim.Play("Idle");
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other) {
+        if(other.gameObject.layer == LayerMask.NameToLayer("EnvTrigger"))
+        {
+            Animator anim = other.gameObject.GetComponent<Animator>();
+            anim.Play("Fade In");
+        }
     }
 }
