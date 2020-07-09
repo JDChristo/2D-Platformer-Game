@@ -4,21 +4,36 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
-    //public
-    public Animator animator;
-    public float jumpForce, walkSpeed, runSpeed;
-    public Vector2 boxCrouchOffset, boxCrouchSize;
+    [SerializeField]
+    private Animator animator;
+    
+    [SerializeField]
+    private float jumpForce;
+    
+    [SerializeField]
+    private float walkSpeed;
+    
+    [SerializeField]
+    private float runSpeed;
+    
+    [SerializeField]
+    private Vector2 boxCrouchOffset;
+    
+    [SerializeField]
+    private Vector2 boxCrouchSize;
 
     //private
-    private BoxCollider2D playerCollider;
+    private CapsuleCollider2D playerCollider;
     private Rigidbody2D rb2d;
+    private Vector2 initialPos;
     private Vector2 boxSize, boxOffset;
+    private bool isGround;
     
 
     private void Start()
     {
-        playerCollider = GetComponent<BoxCollider2D>();
+        initialPos = transform.position;
+        playerCollider = GetComponent<CapsuleCollider2D>();
         rb2d = GetComponent<Rigidbody2D>();
         boxOffset = playerCollider.offset;
         boxSize = playerCollider.size;
@@ -53,9 +68,11 @@ public class PlayerController : MonoBehaviour
         transform.position = position;
 
         //Jump Player
-        if(yAxis)
+        if(yAxis && isGround)
         {
             rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
+            animator.SetTrigger("isJump");
+            isGround = false;
         }
     }
 
@@ -80,14 +97,25 @@ public class PlayerController : MonoBehaviour
         playerCollider.size = (crouching) ? boxCrouchSize : boxSize;
         playerCollider.offset = (crouching) ? boxCrouchOffset : boxOffset;
 
-        //Jump Player Animation
-        if (yAxis)
-        {
-            animator.SetTrigger("isJump");
-        }
-
     }
 
+    private void OnCollisionEnter2D(Collision2D other) 
+    {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            isGround = true;
+        }
+        if(other.gameObject.layer == LayerMask.NameToLayer("Pit"))
+        {
+            transform.position = initialPos;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D other) {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            isGround = false;
+        }
+    }
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.layer == LayerMask.NameToLayer("EnvTrigger"))
         {
@@ -109,4 +137,5 @@ public class PlayerController : MonoBehaviour
             anim.Play("Fade In");
         }
     }
+
 }
